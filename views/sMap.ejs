@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서포터즈 모드</title>
+</head>
+
+<body>
+    <h1>서포터즈 모드</h1>
+    <% for (let list of maplist) {%>
+        <h5>
+            <a href="support/<%= list._id %>">
+                <%= list.location %>
+            </a>
+        </h5>
+        <% } %>
+</body>
+
+</html>
