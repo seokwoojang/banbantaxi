@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+</head>
+
+<body>
+    <h1>지도 편집</h1>
+    <form action="/support/<%= map._id %>?_method=put" method="post">
+        <label for="location">Location</label>
+        <input type="text" name="location" id="location" placeholder="location" value="<%= map.location %>">
+        <label for="image">Image</label>
+        <input type="text" name="image" id="image" placeholder="image" value="<%= map.image %>">
+        <label for="description">Description</label>
+        <textarea name="description" id="description" cols="30" rows="10"><%= map.description %></textarea>
+        <button>Submit</button>
+    </form>
+    <a href="/support/<%= map._id %>">취소</a>
+</body>
+
+</html>

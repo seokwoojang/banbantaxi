@@ -30,7 +30,13 @@ const seedMaps = [
   },
 ];
 
-Maplist.deleteMany({});
+// Maplist.deleteMany({})
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((e) => {
+//     console.log(e);
+//   });
 
 Maplist.insertMany(seedMaps)
   .then((res) => {

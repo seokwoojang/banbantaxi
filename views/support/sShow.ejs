@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= map.location %>
+    </title>
+</head>
+
+<body>
+    <h1>
+        <%= map.location %>
+    </h1>
+    <div>
+        <img src="<%= map.image %>" alt="">
+    </div>
+    <a href="/support">이전 페이지</a>
+    <a href="/support/<%= map._id %>/edit">지도 편집</a>
+    <form action="/support/<%= map._id %>?_method=delete" method="post">
+        <button>삭제</button>
+    </form>
+</body>
+
+</html>
