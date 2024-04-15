@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이동약자 모드</title>
-</head>
-
-<body>
+<% layout('layout/boilerplate') %>
     <h1>이동약자 모드</h1>
     <% for (let list of maplist) {%>
-        <h5>
-            <a href="/normal/<%= list._id %>">
-                <%= list.location %>
-            </a>
-        </h5>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= list.location %>
+                        </h5>
+                        <p class="card-text">
+                            <%= list.description %>
+                        </p>
+                        <a href="/normal/<%= list._id %>" class="btn btn-primary">자세히 보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <% } %>
-</body>
-
-</html>
+            <a href="/">이전 페이지</a>

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
+const ejsMate = require("ejs-mate");
 const Maplist = require("./models/mapList"); //스키마 연결
 const methodOverride = require("method-override");
 
@@ -13,6 +14,7 @@ db.once("open", () => {
   console.log("Database 연결됨");
 });
 
+app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -75,13 +77,13 @@ app.delete("/support/:id", async (req, res) => {
 //이동약자 모드
 app.get("/normal", async (req, res) => {
   const maplist = await Maplist.find({});
-  res.render("nMap", { maplist });
+  res.render("normal/nMap", { maplist });
 });
 
 //이동약자 모드에서 지도하나 선택시 가는 페이지
 app.get("/normal/:id", async (req, res) => {
   const map = await Maplist.findById(req.params.id);
-  res.render("nShow", { map });
+  res.render("normal/nShow", { map });
 });
 
 app.listen(3000, () => {
