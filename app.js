@@ -3,6 +3,9 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
+const { mapSchema } = require("./schemas.js");
+const catchAsync = require("./utils/catchAsync");
+const ExpressError = require("./utils/ExpressError");
 const Maplist = require("./models/mapList"); //스키마 연결
 const methodOverride = require("method-override");
 
@@ -21,69 +24,118 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+const validateMap = (req, res, next) => {
+  const { error } = mapSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
 //메인 페이지
 app.get("/", (req, res) => {
   res.render("home");
 });
 
 //서포터즈 모드 ----------------------------------------------
-app.get("/support", async (req, res) => {
-  const maplist = await Maplist.find({});
-  res.render("support/sMap", { maplist });
-});
+app.get(
+  "/support",
+  catchAsync(async (req, res) => {
+    const maplist = await Maplist.find({});
+    res.render("support/sMap", { maplist });
+  })
+);
 
 //새로운 지도 만들기
-app.get("/support/new", async (req, res) => {
-  res.render("support/newMap");
-});
+app.get(
+  "/support/new",
+  catchAsync(async (req, res) => {
+    res.render("support/newMap");
+  })
+);
 
-app.post("/support", async (req, res) => {
-  const newMap = new Maplist(req.body);
-  await newMap.save();
-  res.redirect(`/support/${newMap._id}`);
-});
+app.post(
+  "/support",
+  validateMap,
+  catchAsync(async (req, res) => {
+    const newMap = new Maplist(req.body.map);
+    await newMap.save();
+    res.redirect(`/support/${newMap._id}`);
+  })
+);
 
 //서포터즈 모드에서 지도하나 선택시 가는 페이지
-app.get("/support/:id", async (req, res) => {
-  const map = await Maplist.findById(req.params.id);
-  res.render("support/sShow", { map });
-});
+app.get(
+  "/support/:id",
+  catchAsync(async (req, res) => {
+    const map = await Maplist.findById(req.params.id);
+    res.render("support/sShow", { map });
+  })
+);
 
 //지도 수정
-app.get("/support/:id/edit", async (req, res) => {
-  const { id } = req.params;
-  const map = await Maplist.findById(id);
-  res.render("support/edit", { map });
-});
+app.get(
+  "/support/:id/edit",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const map = await Maplist.findById(id);
+    res.render("support/edit", { map });
+  })
+);
 
 //지도 수정
-app.put("/support/:id", async (req, res) => {
-  const { id } = req.params;
-  const map = await Maplist.findByIdAndUpdate(id, req.body, {
-    runValidators: true,
-    new: true,
-  });
-  res.redirect(`/support/${map._id}`);
-});
+app.put(
+  "/support/:id",
+  validateMap,
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const map = await Maplist.findByIdAndUpdate(id, req.body, {
+      runValidators: true,
+      new: true,
+    });
+    res.redirect(`/support/${map._id}`);
+  })
+);
 
-app.delete("/support/:id", async (req, res) => {
-  const { id } = req.params;
-  const map = await Maplist.findByIdAndDelete(id);
-  res.redirect("/support");
-});
+app.delete(
+  "/support/:id",
+  catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const map = await Maplist.findByIdAndDelete(id);
+    res.redirect("/support");
+  })
+);
 
 //---------------------------------------------------
 
 //이동약자 모드
-app.get("/normal", async (req, res) => {
-  const maplist = await Maplist.find({});
-  res.render("normal/nMap", { maplist });
-});
+app.get(
+  "/normal",
+  catchAsync(async (req, res) => {
+    const maplist = await Maplist.find({});
+    res.render("normal/nMap", { maplist });
+  })
+);
 
 //이동약자 모드에서 지도하나 선택시 가는 페이지
-app.get("/normal/:id", async (req, res) => {
-  const map = await Maplist.findById(req.params.id);
-  res.render("normal/nShow", { map });
+app.get(
+  "/normal/:id",
+  catchAsync(async (req, res) => {
+    const map = await Maplist.findById(req.params.id);
+    res.render("normal/nShow", { map });
+  })
+);
+
+app.all("*", (req, res, next) => {
+  next(new ExpressError("page not found", 404));
+});
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = "뭔가 잘못됨";
+  res.status(statusCode).render("error", { err });
 });
 
 app.listen(3000, () => {

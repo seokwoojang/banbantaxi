@@ -2,21 +2,30 @@
     <div class="row">
         <h1 class="text-center">지도 편집</h1>
         <div class="col-6 offset-3">
-            <form action="/support/<%= map._id %>?_method=put" method="post">
+            <form action="/support/<%= map._id %>?_method=put" method="post" novalidate class="validated-form">
                 <div class="mb-3">
                     <label for="location" class="form-label">위치</label>
-                    <input class="form-control" type="text" name="location" id="location" placeholder="location"
-                        value="<%= map.location %>">
+                    <input class="form-control" type="text" name="map[location]" id="location" placeholder="location"
+                        value="<%= map.location %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">이미지</label>
-                    <input class="form-control" type="text" name="image" id="image" placeholder="image"
-                        value="<%= map.image %>">
+                    <input class="form-control" type="text" name="map[image]" id="image" placeholder="image"
+                        value="<%= map.image %>" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">설명</label>
-                    <textarea class="form-control" name="description" id="description" cols="30"
-                        rows="5"><%= map.description %></textarea>
+                    <textarea class="form-control" name="map[description]" id="description" cols="30" rows="5"
+                        required><%= map.description %></textarea>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Submit</button>
