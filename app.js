@@ -37,6 +37,10 @@ app.get("/support/new", async (req, res) => {
   res.render("support/newMap");
 });
 
+app.get("/map", async (req, res) => {
+  res.render("support/map");
+});
+
 app.post("/support", async (req, res) => {
   const newMap = new Maplist(req.body);
   await newMap.save();
