@@ -54,10 +54,42 @@
       .distanceInfo:after {
         content: none;
       }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .button {
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 2em;
+      }
+      .button1 {
+        background-color: #e9ec08;
+        opacity: 100%;
+      }
+      .button2 {
+        background-color: #e29e09;
+        opacity: 50%;
+      }
+      .button3 {
+        background-color: #ce0e9e;
+        opacity: 50%;
+      }
     </style>
   </head>
   <body>
-    <div id="map" style="width: 100%; height: 800px"></div>
+    <div id="map" style="width: 100%; height: 80%"></div>
+    <button class="button button1">어린이</button>
+    <button class="button button2">노약자</button>
+    <button class="button button3">장애인</button>
     <p>
       <em
         >지도를 마우스로 클릭하면 선 그리기가 시작되고<br />오른쪽 마우스를
@@ -166,7 +198,7 @@
             map: map, // 선을 표시할 지도입니다
             path: [clickPosition], // 선을 구성하는 좌표 배열입니다 클릭한 위치를 넣어줍니다
             strokeWeight: 3, // 선의 두께입니다
-            strokeColor: "#db4040", // 선의 색깔입니다
+            strokeColor: nColor, // 선의 색깔입니다
             strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
             strokeStyle: "solid", // 선의 스타일입니다
           });
@@ -174,7 +206,7 @@
           // 선이 그려지고 있을 때 마우스 움직임에 따라 선이 그려질 위치를 표시할 선을 생성합니다
           moveLine = new kakao.maps.Polyline({
             strokeWeight: 3, // 선의 두께입니다
-            strokeColor: "#db4040", // 선의 색깔입니다
+            strokeColor: nColor, // 선의 색깔입니다
             strokeOpacity: 0.5, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
             strokeStyle: "solid", // 선의 스타일입니다
           });
@@ -410,6 +442,73 @@
 
         return content;
       }
+
+      var old = "#e29e09";
+      var children = "#e9ec08";
+      var disable = "#ce0e9e";
+      var nColor = "#e4e01b";
+
+      // Green 버튼 클릭 시 이벤트 처리
+      document.querySelector(".button1").addEventListener("click", function () {
+        nColor = children;
+
+        // 모든 버튼의 opacity를 50%로 초기화
+        document.querySelectorAll(".button").forEach(function (btn) {
+          btn.style.opacity = "50%";
+        });
+
+        // 클릭된 버튼의 opacity를 100%로 설정
+        this.style.opacity = "100%";
+      });
+
+      document.querySelector(".button2").addEventListener("click", function () {
+        nColor = old;
+
+        // 모든 버튼의 opacity를 50%로 초기화
+        document.querySelectorAll(".button").forEach(function (btn) {
+          btn.style.opacity = "50%";
+        });
+
+        // 클릭된 버튼의 opacity를 100%로 설정
+        this.style.opacity = "100%";
+      });
+
+      document.querySelector(".button3").addEventListener("click", function () {
+        nColor = disable;
+
+        // 모든 버튼의 opacity를 50%로 초기화
+        document.querySelectorAll(".button").forEach(function (btn) {
+          btn.style.opacity = "50%";
+        });
+
+        // 클릭된 버튼의 opacity를 100%로 설정
+        this.style.opacity = "100%";
+      });
+
+      //Buttons = {};
+
+      // // 버튼 그리기
+      // kakao.maps.event.addListener(map, "center_changed", function () {
+      //   deleteButton();
+      //   drawButton();
+      // });
+
+      // function drawButton() {
+      //   var content = '<button class="button button1">Green</button>';
+      //   var latlng = map.getCenter();
+      //   // 커스텀 오버레이가 표시될 위치입니다
+      //   var position = new kakao.maps.LatLng(latlng.getLat(), latlng.getLng());
+      //   // 커스텀 오버레이를 생성합니다
+      //   var customOverlay = new kakao.maps.CustomOverlay({
+      //     position: position,
+      //     content: content,
+      //     xAnchor: 0.3,
+      //     yAnchor: 0.91,
+      //   });
+
+      //   // 커스텀 오버레이를 지도에 표시합니다
+      //   customOverlay.setMap(map);
+      // }
     </script>
   </body>
 </html>
