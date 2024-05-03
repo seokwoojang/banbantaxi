@@ -3,11 +3,12 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
-const { mapSchema } = require("./schemas.js");
-const catchAsync = require("./utils/catchAsync");
-const ExpressError = require("./utils/ExpressError");
+const { mapSchema, reviewSchema } = require("./schemas.js"); //유효성검사
+const catchAsync = require("./utils/catchAsync"); //오류처리
+const ExpressError = require("./utils/ExpressError"); //오류처리
 const Maplist = require("./models/mapList"); //스키마 연결
 const methodOverride = require("method-override");
+const Review = require("./models/review.js");
 
 // db 연결
 mongoose.connect("mongodb://127.0.0.1:27017/hand");
@@ -24,8 +25,19 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
+//유효성 검사
 const validateMap = (req, res, next) => {
   const { error } = mapSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(msg, 400);
@@ -70,7 +82,7 @@ app.post(
 app.get(
   "/support/:id",
   catchAsync(async (req, res) => {
-    const map = await Maplist.findById(req.params.id);
+    const map = await Maplist.findById(req.params.id).populate("reviews");
     res.render("support/sShow", { map });
   })
 );
@@ -105,6 +117,29 @@ app.delete(
     const { id } = req.params;
     const map = await Maplist.findByIdAndDelete(id);
     res.redirect("/support");
+  })
+);
+
+app.post(
+  "/support/:id/reviews",
+  validateReview,
+  catchAsync(async (req, res) => {
+    const map = await Maplist.findById(req.params.id);
+    const review = new Review(req.body.review);
+    map.reviews.push(review);
+    await review.save();
+    await map.save();
+    res.redirect(`/support/${map._id}`);
+  })
+);
+
+app.delete(
+  "/support/:id/reviews/:reviewId",
+  catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Maplist.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/support/${id}`);
   })
 );
 
