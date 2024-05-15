@@ -143,10 +143,6 @@ app.delete(
   })
 );
 
-app.get("/map", async (req, res) => {
-  res.render("support/map");
-});
-
 //---------------------------------------------------
 
 //이동약자 모드
