@@ -87,6 +87,7 @@
   </head>
   <body>
     <div id="map" style="width: 100%; height: 80%"></div>
+
     <div style="display: flex; justify-content: space-between">
       <div>
         <button class="button button1">어린이</button>
@@ -103,8 +104,8 @@
         <h4>지정 경로를 설정해주세요</h4>
         <h4>
           지도를
-          <span style="color: rgb(218, 9, 218)">왼쪽 마우스로 클릭하면</span> 선
-          그리기가 시작되고
+          <span style="color: rgb(218, 9, 218)">왼쪽 마우스로 클릭하면</span>
+          선 그리기가 시작되고
         </h4>
         <h4>
           <span style="color: rgb(218, 9, 218)">오른쪽 마우스를 클릭하면</span>
@@ -128,6 +129,10 @@
 
       // 지도를 생성합니다
       var map = new kakao.maps.Map(mapContainer, mapOption);
+
+      // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+      var zoomControl = new kakao.maps.ZoomControl();
+      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
       var drawingFlag = false; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
       var moveLine; // 선이 그려지고 있을때 마우스 움직임에 따라 그려질 선 객체 입니다
