@@ -83,15 +83,29 @@
 <div style="display: flex">
   <div style="flex: 3; padding-right: 20px">
     <div id="map" style="width: 100%; height: 90%"></div>
-    <div style="display: flex; justify-content: space-between">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      "
+    >
       <div>
         <button class="button button1">어린이</button>
         <button class="button button2">노약자</button>
         <button class="button button3">장애인</button>
       </div>
-      <div>
-        <label for="fname">장소 검색 :</label><br />
-        <input type="text" id="fname" name="fname" /><br />
+      <div style="margin-left: 20px; margin-top: 20px">
+        <div class="mb-3">
+          <input
+            type="text"
+            id="fname"
+            name="fname"
+            class="form-control"
+            placeholder="장소 검색"
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
       </div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 10px">
