@@ -9,9 +9,13 @@ const Maplist = require("./models/mapList"); //스키마 연결
 const methodOverride = require("method-override");
 const session = require("express-session");
 const flash = require("connect-flash"); //메세지를 띄우기 위해 사용
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 const supportRoutes = require("./routes/support.js");
 const reviewsRoutes = require("./routes/reviews.js");
+const usersRoutes = require("./routes/users.js");
 
 // db 연결
 mongoose.connect("mongodb://127.0.0.1:27017/hand");
@@ -42,7 +46,15 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
@@ -50,6 +62,7 @@ app.use((req, res, next) => {
 
 app.use("/support", supportRoutes); // 서포터즈 라우터
 app.use("/support/:id/reviews", reviewsRoutes); // 리뷰 라우터
+app.use("/", usersRoutes); //사용자 라우터
 
 //메인 페이지
 app.get("/", (req, res) => {
@@ -59,97 +72,6 @@ app.get("/", (req, res) => {
 app.get("/map", async (req, res) => {
   res.render("support/map");
 });
-//서포터즈 모드 ----------------------------------------------
-app.get(
-  "/support",
-  catchAsync(async (req, res) => {
-    const maplist = await Maplist.find({});
-    res.render("support/sMap", { maplist });
-  })
-);
-
-//새로운 지도 만들기
-app.get(
-  "/support/new",
-  catchAsync(async (req, res) => {
-    res.render("support/newMap");
-  })
-);
-
-app.post(
-  "/support",
-  validateMap,
-  catchAsync(async (req, res) => {
-    const newMap = new Maplist(req.body.map);
-    await newMap.save();
-    res.redirect(`/support/${newMap._id}`);
-  })
-);
-
-//서포터즈 모드에서 지도하나 선택시 가는 페이지
-app.get(
-  "/support/:id",
-  catchAsync(async (req, res) => {
-    const map = await Maplist.findById(req.params.id).populate("reviews");
-    res.render("support/sShow", { map });
-  })
-);
-
-//지도 수정
-app.get(
-  "/support/:id/edit",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const map = await Maplist.findById(id);
-    res.render("support/edit", { map });
-  })
-);
-
-//지도 수정
-app.put(
-  "/support/:id",
-  validateMap,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const map = await Maplist.findByIdAndUpdate(id, req.body, {
-      runValidators: true,
-      new: true,
-    });
-    res.redirect(`/support/${map._id}`);
-  })
-);
-
-app.delete(
-  "/support/:id",
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const map = await Maplist.findByIdAndDelete(id);
-    res.redirect("/support");
-  })
-);
-
-app.post(
-  "/support/:id/reviews",
-  validateReview,
-  catchAsync(async (req, res) => {
-    const map = await Maplist.findById(req.params.id);
-    const review = new Review(req.body.review);
-    map.reviews.push(review);
-    await review.save();
-    await map.save();
-    res.redirect(`/support/${map._id}`);
-  })
-);
-
-app.delete(
-  "/support/:id/reviews/:reviewId",
-  catchAsync(async (req, res) => {
-    const { id, reviewId } = req.params;
-    await Maplist.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/support/${id}`);
-  })
-);
 
 //---------------------------------------------------
 

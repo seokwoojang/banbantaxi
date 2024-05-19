@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync"); //오류처리
 const ExpressError = require("../utils/ExpressError"); //오류처리
 const Maplist = require("../models/mapList"); //스키마 연결
 const { mapSchema } = require("../schemas.js");
+const { isLoggedIn } = require("../middleware.js");
 
 //유효성 검사
 const validateMap = (req, res, next) => {
@@ -28,6 +29,7 @@ router.get(
 //새로운 지도 만들기
 router.get(
   "/new",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     res.render("support/newMap");
   })
@@ -35,6 +37,7 @@ router.get(
 
 router.post(
   "/",
+  isLoggedIn,
   validateMap,
   catchAsync(async (req, res) => {
     const newMap = new Maplist(req.body.map);
@@ -60,6 +63,7 @@ router.get(
 //지도 수정
 router.get(
   "/:id/edit",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const map = await Maplist.findById(id);
@@ -74,6 +78,7 @@ router.get(
 //지도 수정
 router.put(
   "/:id",
+  isLoggedIn,
   validateMap,
   catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -88,6 +93,7 @@ router.put(
 
 router.delete(
   "/:id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const map = await Maplist.findByIdAndDelete(id);

@@ -13,5 +13,13 @@
         <a class="nav-link" href="/support/new">새로운 지도 추가</a>
       </div>
     </div>
+    <div class="navbar-nav ml-auto">
+      <% if(!currentUser) { %>
+        <a href="/login" class="nav-link">로그인</a>
+        <a href="/register" class="nav-link">회원가입</a>
+        <% } else { %>
+          <a href="/logout" class="nav-link">로그아웃</a>
+          <% } %>
+    </div>
   </div>
 </nav>
