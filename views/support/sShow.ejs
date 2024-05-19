@@ -12,49 +12,61 @@
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">작성자 <%= map.author.username %>
+                    </li>
                     <li class="list-group-item">A second item</li>
                     <li class="list-group-item">A third item</li>
                 </ul>
-                <div class="card-body">
-                    <a href="/support/<%= map._id %>/edit" class="card-link btn btn-warning">지도 편집</a>
-                    <form class="d-inline" action="/support/<%= map._id %>?_method=delete" method="post">
-                        <button class="btn btn-danger">삭제</button>
-                    </form>
-                </div>
-                <div class="card-footer text-muted">
-                    <a href="/support" class="">이전 페이지</a>
-                </div>
+                <% if (currentUser && map.author.equals(currentUser)) {%>
+                    <div class="card-body">
+                        <a href="/support/<%= map._id %>/edit" class="card-link btn btn-warning">지도 편집</a>
+                        <form class="d-inline" action="/support/<%= map._id %>?_method=delete" method="post">
+                            <button class="btn btn-danger">삭제</button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <div class="card-footer text-muted">
+                            <a href="/support" class="">이전 페이지</a>
+                        </div>
             </div>
         </div>
         <div class="col-6">
-            <h2>후기를 남겨주세요</h2>
-            <form action="/support/<%= map._id %>/reviews" method="post" class="mb-3 validated-form" novalidate>
-                <div class="mb-3">
-                    <label class="form-label" for="rating">점수</label>
-                    <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="body">후기</label>
-                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
+            <% if(currentUser) {%>
+                <h2>후기를 남겨주세요</h2>
+                <form action="/support/<%= map._id %>/reviews" method="post" class="mb-3 validated-form" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="rating">점수</label>
+                        <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
                     </div>
-                </div>
-                <button class="btn btn-success">제출</button>
-            </form>
-            <% for(let review of map.reviews) {%>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">점수: <%= review.rating %>
-                        </h5>
-                        <p class="card-text">후기: <%= review.body %>
-                        </p>
-                        <form action="/support/<%= map._id %>/reviews/<%= review._id %>?_method=delete" method="post">
-                            <button class="btn btn-sm btn-danger">삭제</button>
-                        </form>
+                    <div class="mb-3">
+                        <label class="form-label" for="body">후기</label>
+                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"
+                            required></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                     </div>
-                </div>
+                    <button class="btn btn-success">제출</button>
+                </form>
                 <% } %>
+                    <% for(let review of map.reviews) {%>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">점수: <%= review.rating %>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    작성자: <%= review.author.username %>
+                                </h6>
+                                <p class="card-text">후기: <%= review.body %>
+                                </p>
+                                <% if (currentUser && review.author.equals(currentUser)) {%>
+                                    <form action="/support/<%= map._id %>/reviews/<%= review._id %>?_method=delete"
+                                        method="post">
+                                        <button class="btn btn-sm btn-danger">삭제</button>
+                                    </form>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% } %>
         </div>
     </div>

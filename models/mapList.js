@@ -6,6 +6,10 @@ const MapListSchema = new Schema({
   location: String,
   image: String,
   description: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   reviews: [
     {
       type: Schema.Types.ObjectId,

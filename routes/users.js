@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync"); //오류처리
 const User = require("../models/user");
 const passport = require("passport");
+const { storeReturnTo } = require("../middleware");
 
 router.get("/register", (req, res) => {
   res.render("users/register");
@@ -32,13 +33,15 @@ router.get("/login", (req, res) => {
 
 router.post(
   "/login",
+  storeReturnTo,
   passport.authenticate("local", {
     failureFlash: true,
     failureRedirect: "/login",
   }),
   (req, res) => {
     req.flash("success", "환영합니다");
-    res.redirect("/support");
+    const redirectUrl = res.locals.returnTo || "/support";
+    res.redirect(redirectUrl);
   }
 );
 

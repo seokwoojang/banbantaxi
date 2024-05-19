@@ -1,21 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync"); //오류처리
-const ExpressError = require("../utils/ExpressError"); //오류처리
 const Maplist = require("../models/mapList"); //스키마 연결
-const { mapSchema } = require("../schemas.js");
-const { isLoggedIn } = require("../middleware.js");
-
-//유효성 검사
-const validateMap = (req, res, next) => {
-  const { error } = mapSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
+const { isLoggedIn, validateMap, isAuthor } = require("../middleware.js");
 
 //서포터즈 모드 ----------------------------------------------
 router.get(
@@ -41,6 +28,7 @@ router.post(
   validateMap,
   catchAsync(async (req, res) => {
     const newMap = new Maplist(req.body.map);
+    newMap.author = req.user._id;
     await newMap.save();
     req.flash("success", "새로운 지도를 추가하는데 성공하였습니다!");
     res.redirect(`/support/${newMap._id}`);
@@ -51,7 +39,14 @@ router.post(
 router.get(
   "/:id",
   catchAsync(async (req, res) => {
-    const map = await Maplist.findById(req.params.id).populate("reviews");
+    const map = await Maplist.findById(req.params.id)
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate("author");
     if (!map) {
       req.flash("error", "지도를 찾을 수 없습니다!");
       return res.redirect("/support");
@@ -64,6 +59,7 @@ router.get(
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isAuthor,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const map = await Maplist.findById(id);
@@ -79,13 +75,11 @@ router.get(
 router.put(
   "/:id",
   isLoggedIn,
+  isAuthor,
   validateMap,
   catchAsync(async (req, res) => {
     const { id } = req.params;
-    const map = await Maplist.findByIdAndUpdate(id, req.body, {
-      runValidators: true,
-      new: true,
-    });
+    const map = await Maplist.findByIdAndUpdate(id, { ...req.body.map });
     req.flash("success", "성공적으로 지도를 갱신하였습니다!");
     res.redirect(`/support/${map._id}`);
   })
@@ -94,6 +88,7 @@ router.put(
 router.delete(
   "/:id",
   isLoggedIn,
+  isAuthor,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const map = await Maplist.findByIdAndDelete(id);
