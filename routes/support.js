@@ -1,100 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync"); //오류처리
-const Maplist = require("../models/mapList"); //스키마 연결
+const support = require("../controllers/support.js");
 const { isLoggedIn, validateMap, isAuthor } = require("../middleware.js");
 
 //서포터즈 모드 ----------------------------------------------
-router.get(
-  "/",
-  catchAsync(async (req, res) => {
-    const maplist = await Maplist.find({});
-    res.render("support/sMap", { maplist });
-  })
-);
+router
+  .route("/")
+  .get(catchAsync(support.sMap))
+  .post(isLoggedIn, validateMap, catchAsync(support.createMap)); //새로운 지도 만들기
 
 //새로운 지도 만들기
-router.get(
-  "/new",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    res.render("support/newMap");
-  })
-);
+router.get("/new", isLoggedIn, catchAsync(support.renderNewForm));
 
-router.post(
-  "/",
-  isLoggedIn,
-  validateMap,
-  catchAsync(async (req, res) => {
-    const newMap = new Maplist(req.body.map);
-    newMap.author = req.user._id;
-    await newMap.save();
-    req.flash("success", "새로운 지도를 추가하는데 성공하였습니다!");
-    res.redirect(`/support/${newMap._id}`);
-  })
-);
-
-//서포터즈 모드에서 지도하나 선택시 가는 페이지
-router.get(
-  "/:id",
-  catchAsync(async (req, res) => {
-    const map = await Maplist.findById(req.params.id)
-      .populate({
-        path: "reviews",
-        populate: {
-          path: "author",
-        },
-      })
-      .populate("author");
-    if (!map) {
-      req.flash("error", "지도를 찾을 수 없습니다!");
-      return res.redirect("/support");
-    }
-    res.render("support/sShow", { map });
-  })
-);
+router
+  .route("/:id")
+  .get(catchAsync(support.showMap)) //서포터즈 모드에서 지도하나 선택시 가는 페이지
+  .put(isLoggedIn, isAuthor, validateMap, catchAsync(support.updateMap)) //지도 수정
+  .delete(isLoggedIn, isAuthor, catchAsync(support.deleteMap)); //지도 삭제
 
 //지도 수정
 router.get(
   "/:id/edit",
   isLoggedIn,
   isAuthor,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const map = await Maplist.findById(id);
-    if (!map) {
-      req.flash("error", "지도를 찾을 수 없습니다!");
-      return res.redirect("/support");
-    }
-    res.render("support/edit", { map });
-  })
-);
-
-//지도 수정
-router.put(
-  "/:id",
-  isLoggedIn,
-  isAuthor,
-  validateMap,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const map = await Maplist.findByIdAndUpdate(id, { ...req.body.map });
-    req.flash("success", "성공적으로 지도를 갱신하였습니다!");
-    res.redirect(`/support/${map._id}`);
-  })
-);
-
-router.delete(
-  "/:id",
-  isLoggedIn,
-  isAuthor,
-  catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const map = await Maplist.findByIdAndDelete(id);
-    req.flash("success", "지도를 성공적으로 삭제했습니다!");
-    res.redirect("/support");
-  })
+  catchAsync(support.renderEditForm)
 );
 
 module.exports = router;
