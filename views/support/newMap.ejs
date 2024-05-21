@@ -130,27 +130,28 @@
     <div style="flex: 2; padding-left: 20px">
       <h1 class="text-center">새 지도</h1>
       <div class="col-8 offset-2">
-        <form action="/support" method="post" novalidate class="validated-form">
+        <form action="/support" method="post" novalidate class="validated-form" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="location" class="form-label">위치</label>
             <input class="form-control" type="text" name="map[location]" id="location" placeholder="location"
               required />
             <div class="valid-feedback">Looks good!</div>
           </div>
-          <div class="mb-3">
+          <input type="file" name="image" id="" multiple>
+          <!-- <div class="mb-3">
             <label for="image" class="form-label">이미지</label>
             <input class="form-control" type="text" name="map[image]" id="image" placeholder="image" required />
             <!-- 이미지-첨부파일 -->
-            <!-- <input
+          <!-- <input
             class="form-control"
             type="file"
             name="map[image]"
             id="image"
             accept="image/*"
             required
-          /> -->
+          /> 
             <div class="valid-feedback">Looks good!</div>
-          </div>
+          </div> -->
           <div class="mb-3">
             <label class="form-label" for="description">설명</label>
             <textarea class="form-control" name="map[description]" id="description" cols="30" rows="10" required

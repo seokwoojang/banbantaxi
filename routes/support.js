@@ -3,12 +3,20 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync"); //오류처리
 const support = require("../controllers/support.js");
 const { isLoggedIn, validateMap, isAuthor } = require("../middleware.js");
+const multer = require("multer");
+const { storage } = require("../cloudinary");
+const upload = multer({ storage });
 
 //서포터즈 모드 ----------------------------------------------
 router
   .route("/")
   .get(catchAsync(support.sMap))
-  .post(isLoggedIn, validateMap, catchAsync(support.createMap)); //새로운 지도 만들기
+  .post(
+    isLoggedIn,
+    upload.array("image"),
+    validateMap,
+    catchAsync(support.createMap)
+  ); //새로운 지도 만들기
 
 //새로운 지도 만들기
 router.get("/new", isLoggedIn, catchAsync(support.renderNewForm));

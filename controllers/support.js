@@ -11,7 +11,9 @@ module.exports.renderNewForm = async (req, res) => {
 
 module.exports.createMap = async (req, res) => {
   const newMap = new Maplist(req.body.map);
+  newMap.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
   newMap.author = req.user._id;
+  // console.log(newMap);
   await newMap.save();
   req.flash("success", "새로운 지도를 추가하는데 성공하였습니다!");
   res.redirect(`/support/${newMap._id}`);

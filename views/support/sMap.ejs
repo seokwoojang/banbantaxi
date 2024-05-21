@@ -3,6 +3,9 @@
     <% for (let list of maplist) {%>
         <div class="card mb-3">
             <div class="row">
+                <div class="col-md-4">
+                    <img class="img-fluid" src="<%= list.images[0].url %>" alt="">
+                </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">

@@ -4,7 +4,12 @@ const Review = require("./review");
 
 const MapListSchema = new Schema({
   location: String,
-  image: String,
+  images: [
+    {
+      url: String,
+      filename: String,
+    },
+  ],
   description: String,
   author: {
     type: Schema.Types.ObjectId,
