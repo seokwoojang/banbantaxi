@@ -1,25 +1,22 @@
 <% layout('layout/boilerplate') %>
-    <h1>서포터즈 모드</h1>
-    <% for (let list of maplist) {%>
-        <div class="card mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <img class="img-fluid" src="<%= list.images[0].url %>" alt="">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%= list.location %>
-                        </h5>
-                        <p class="card-text">
-                            <%= list.description %>
-                        </p>
-                        <a href="/support/<%= list._id %>" class="btn btn-primary">자세히 보기</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <% } %>
-
-            <a href="/support/new">New Map</a>
-            <a href="/">이전 페이지</a>
+<h1>서포터즈 모드</h1>
+<% for (let list of maplist) {%>
+<div class="card mb-3">
+  <div class="row">
+    <div class="col-md-4">
+      <img class="img-fluid" src="<%= list.images[0].url %>" alt="" />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title"><%= list.location %></h5>
+        <p class="card-text"><%= list.description %></p>
+        <a href="/support/<%= list._id %>" class="btn btn-primary"
+          >자세히 보기</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+<a href="/support/new">New Map</a>
+<a href="/">이전 페이지</a>
