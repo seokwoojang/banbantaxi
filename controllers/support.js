@@ -1,4 +1,5 @@
 const Maplist = require("../models/mapList"); //스키마 연결
+const { cloudinary } = require("../cloudinary");
 
 module.exports.sMap = async (req, res) => {
   const maplist = await Maplist.find({});
@@ -48,6 +49,20 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateMap = async (req, res) => {
   const { id } = req.params;
   const map = await Maplist.findByIdAndUpdate(id, { ...req.body.map });
+  const imgs = req.files.map((f) => ({
+    url: f.path,
+    filename: f.filename,
+  }));
+  map.images.push(...imgs);
+  await map.save();
+  if (req.body.deleteImages) {
+    for (let filename of req.body.deleteImages) {
+      await cloudinary.uploader.destroy(filename);
+    }
+    await map.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteImages } } },
+    });
+  }
   req.flash("success", "성공적으로 지도를 갱신하였습니다!");
   res.redirect(`/support/${map._id}`);
 };

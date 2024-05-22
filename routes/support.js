@@ -24,7 +24,13 @@ router.get("/new", isLoggedIn, catchAsync(support.renderNewForm));
 router
   .route("/:id")
   .get(catchAsync(support.showMap)) //서포터즈 모드에서 지도하나 선택시 가는 페이지
-  .put(isLoggedIn, isAuthor, validateMap, catchAsync(support.updateMap)) //지도 수정
+  .put(
+    isLoggedIn,
+    isAuthor,
+    upload.array("image"),
+    validateMap,
+    catchAsync(support.updateMap)
+  ) //지도 수정
   .delete(isLoggedIn, isAuthor, catchAsync(support.deleteMap)); //지도 삭제
 
 //지도 수정
