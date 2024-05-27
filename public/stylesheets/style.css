@@ -1,0 +1,115 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap');
+
+/* Global styles */
+body {
+    font-family: 'Noto Sans', sans-serif; /* Use Google Font */
+}
+
+/* Headings */
+.display-1,
+.lead,
+.small,
+.nav-link {
+    font-weight: bold; /* Bold font */
+}
+
+/* Buttons */
+.btn,
+.btn-primary {
+    font-family: 'Noto Sans', sans-serif; /* Use Google Font */
+    font-weight: bold; /* Bold font */
+    border-radius: 20px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    background-color: #ff8c00; /* Button background color */
+    border: none; /* No border */
+    color: #ffffff; /* Text color */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.btn:hover,
+.btn-primary:hover {
+    background-color: #e67e00; /* Hover background color */
+}
+
+.btn-primary {
+    border-color: #ff8c00; /* Primary button border color */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ff8c00; /* Navbar background color */
+}
+
+.nav-link {
+    margin-right: 15px; /* Right margin */
+    color: #ffffff !important; /* Text color */
+}
+
+.nav-link:hover {
+    color: #ff0000 !important; /* Hover text color */
+}
+
+.nav-link.active {
+    text-decoration: underline; /* Underline for active link */
+}
+
+.navbar-toggler-icon {
+    border-color: #ffffff; /* Navbar toggle icon color */
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: default;
+    color: blue;
+}
+
+/* Home background */
+.home-background {
+    position: relative;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Usage section */
+.usage-section {
+    padding: 40px;
+    background-color: #ffffff;
+}
+
+.usage-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.usage-section p {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.scroll-image {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-image.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
