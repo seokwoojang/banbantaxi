@@ -38,39 +38,60 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: #ff8c00; /* Navbar background color */
-}
-
-.nav-link {
-    margin-right: 15px; /* Right margin */
-    color: #ffffff !important; /* Text color */
-}
-
-.nav-link:hover {
-    color: #ff0000 !important; /* Hover text color */
-}
-
-.nav-link.active {
-    text-decoration: underline; /* Underline for active link */
-}
-
-.navbar-toggler-icon {
-    border-color: #ffffff; /* Navbar toggle icon color */
+    background: linear-gradient(45deg, #ff8c00, #ff4c00); /* Gradient background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
+    color: #ffffff !important; /* White text color */
     cursor: default;
-    color: blue;
+}
+
+.nav-link {
+    font-weight: bold;
+    color: #ffffff !important; /* White text color */
+    margin-right: 15px;
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.nav-link:hover {
+    color: #ffdd57 !important; /* Gold text color on hover */
+}
+
+.nav-link.active {
+    text-decoration: underline;
+    color: #ffdd57 !important; /* Gold text color for active link */
+}
+
+.navbar-toggler {
+    border: none; /* Remove default border */
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%2880,80,80,0.7%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E'); /* Custom icon color */
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-nav {
+        text-align: center;
+    }
+
+    .nav-link {
+        margin: 10px 0;
+    }
 }
 
 /* Home background */
 .home-background {
     position: relative;
-    min-height: 100vh;
-    background-color: #f8f9fa;
-    padding: 20px;
+    min-height: 85vh;
+    background-color: #ffffff;
 }
 
 .icon-container {
@@ -82,7 +103,7 @@ body {
 
 /* Usage section */
 .usage-section {
-    padding: 40px;
+    padding: 0px;
     background-color: #ffffff;
 }
 
