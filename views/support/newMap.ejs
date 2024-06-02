@@ -1,70 +1,5 @@
 <style>
-  .dot {
-    overflow: hidden;
-    float: left;
-    width: 12px;
-    height: 12px;
-    background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/mini_circle.png");
-  }
-
-  .dotOverlay {
-    position: relative;
-    bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    border-bottom: 2px solid #ddd;
-    float: left;
-    font-size: 12px;
-    padding: 5px;
-    background: #fff;
-  }
-
-  .dotOverlay:nth-of-type(n) {
-    border: 0;
-    box-shadow: 0px 1px 2px #888;
-  }
-
-  .number {
-    font-weight: bold;
-    color: #ee6152;
-  }
-
-  .dotOverlay:after {
-    content: "";
-    position: absolute;
-    margin-left: -6px;
-    left: 50%;
-    bottom: -8px;
-    width: 11px;
-    height: 8px;
-    background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white_small.png");
-  }
-
-  .distanceInfo {
-    position: relative;
-    top: 5px;
-    left: 5px;
-    list-style: none;
-    margin: 0;
-  }
-
-  .distanceInfo .label {
-    display: inline-block;
-    width: 50px;
-  }
-
-  .distanceInfo:after {
-    content: none;
-  }
-
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
-
-  .button {
+.button {
     border: none;
     color: white;
     padding: 12px 28px;
@@ -74,24 +9,33 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 2em;
-  }
+    transition: opacity 0.3s, transform 0.2s; /* transform에 대한 transition 추가 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+}
 
-  .button1 {
-    background-color: #e9ec08;
-    opacity: 100%;
-  }
+.button1, .button2, .button3 {
+    width: auto;
+}
 
-  .button2 {
-    background-color: #e29e09;
-    opacity: 50%;
-  }
+.button1:hover, .button2:hover, .button3:hover {
+    opacity: 0.8;
+    transform: translateY(-2px); /* 호버 시 버튼이 조금 위로 이동하는 효과 */
+}
 
-  .button3 {
-    background-color: #ce0e9e;
-    opacity: 50%;
-  }
-  .spinner {
-    display: none;
+.button1 {
+    background-color: #ffec59;
+}
+
+.button2 {
+    background-color: #ffad42;
+}
+
+.button3 {
+    background-color: #9b30ff;
+}
+
+/* 스피너 */
+.spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
     border-left-color: #000;
     border-radius: 50%;
@@ -99,16 +43,59 @@
     height: 20px;
     animation: spin 1s linear infinite;
     margin-left: 10px;
-  }
+    display: inline-block;
+}
 
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+/* 이전 페이지 링크 */
+.previous-page-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff8c00;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.previous-page-link:hover {
+    background-color: #ff4c00;
+    color: #fff;
+}
+
+.previous-page-link {
+    font-family: 'Noto Sans', sans-serif; /* Use Google Font */
+    font-weight: bold; /* Bold font */
+    border-radius: 5px; /* Slightly rounded corners */
+    padding: 12px 25px; /* More padding */
+    background-color: #ff8c00; /* Button background color */
+    border: 2px solid #ff4c00; /* Button border color */
+    color: #ffffff; /* Text color */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s; /* Smooth transition */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+}
+
+.previous-page-link:hover,
+.previous-page-link:hover {
+    background-color: #e67e00; /* Hover background color */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.previous-page-link:active,
+.previous-page-link:active {
+    background-color: #d66a00; /* Active background color */
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.2); /* Inner shadow for pressed effect */
+    transform: translateY(1px); /* Press down effect */
+}
+
+.previous-page-link {
+    border-color: #ff4c00; /* Primary button border color */
+}
+
+
+
+
 </style>
 <% layout('layout/boilerplate') %>
 <div style="display: flex">
@@ -141,21 +128,21 @@
     </div>
     <div style="display: flex; justify-content: center; margin-top: 10px">
       <div style="text-align: center; line-height: 4px">
-        <h5>지정 경로를 설정해주세요</h5>
-        <h5>
+        <h5><b>지정 경로를 설정해주세요</b></h5>
+        <h5><b>
           지도를
-          <span style="color: rgb(218, 9, 218)">왼쪽 마우스로 클릭하면</span>
+          <span style="color: #ff8c00;">왼쪽 마우스로 클릭하면</span>
           선 그리기가 시작되고
-        </h5>
-        <h5>
-          <span style="color: rgb(218, 9, 218)">오른쪽 마우스를 클릭하면</span>
+        </b></h5>
+        <h5><b>
+          <span style="color: #ff8c00;">오른쪽 마우스를 클릭하면</span>
           선 그리기가 종료됩니다
-        </h5>
+        </b></h5>
       </div>
     </div>
   </div>
   <div style="flex: 2; padding-left: 20px">
-    <h1 class="text-center">새 지도</h1>
+    <h1 class="text-center"><b>새 지도</b></h1>
     <div class="col-8 offset-2">
       <form
         action="/support"
@@ -210,7 +197,7 @@
           <div id="spinner" class="spinner"></div>
         </div>
       </form>
-      <a href="/support">이전 페이지</a>
+      <a href="/support" class="previous-page-link">이전 페이지</a>
     </div>
   </div>
   <script
@@ -247,7 +234,7 @@
     var ps = new kakao.maps.services.Places();
 
     // 키워드로 장소를 검색합니다
-    ps.keywordSearch("금오공대", placesSearchCB);
+    ps.keywordSearch("", placesSearchCB);
 
     document.getElementById("fname").addEventListener("keypress", function () {
       if (event.keyCode === 13) {
