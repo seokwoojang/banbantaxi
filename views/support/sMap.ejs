@@ -55,23 +55,38 @@
     background-color: #218838;
   }
 </style>
-<h1 class="text-center">서포터즈 모드</h1>
-<% for (let list of maplist) {%>
+<div style="display: flex; justify-content: space-between; align-items: center">
+  <h1>서포터즈 모드</h1>
+  <form method="GET" action="/support/search">
+    <input type="text" name="search" placeholder="장소 검색" />
+    <button type="submit">검색</button>
+  </form>
+</div>
+<% if (maplist.length === 0) { %>
+<p>검색 결과가 없습니다.</p>
+<% } else { %> <% for (let list of maplist) { %>
 <div class="card">
   <div class="row g-0">
     <div class="col-md-4">
-      <img src="<%= list.images[0].url %>" class="img-fluid rounded-start" alt="<%= list.location %>" />
+      <img
+        src="<%= list.images[0].url %>"
+        class="img-fluid rounded-start"
+        alt="<%= list.location %>"
+      />
     </div>
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title"><%= list.location %></h5>
         <p class="card-text"><%= list.description %></p>
-        <a href="/support/<%= list._id %>" class="btn btn-primary">자세히 보기</a>
+        <a href="/support/<%= list._id %>" class="btn btn-primary"
+          >자세히 보기</a
+        >
       </div>
     </div>
   </div>
 </div>
-<% } %>
+<% } %> <% } %>
+
 <div class="text-center">
   <a href="/support/new" class="btn-link">New Map</a>
   <a href="/" class="btn-link">이전 페이지</a>

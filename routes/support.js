@@ -8,6 +8,10 @@ const { storage } = require("../cloudinary");
 const upload = multer({ storage });
 
 //서포터즈 모드 ----------------------------------------------
+
+// 지도 검색
+router.get('/search', catchAsync(support.searchMap));
+
 router
   .route("/")
   .get(catchAsync(support.sMap))

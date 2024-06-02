@@ -73,3 +73,19 @@ module.exports.deleteMap = async (req, res) => {
   req.flash("success", "지도를 성공적으로 삭제했습니다!");
   res.redirect("/support");
 };
+
+module.exports.searchMap = async (req, res) => {
+  const { search } = req.query;
+  if (!search) {
+    req.flash('error', '검색어를 입력해주세요.');
+    return res.redirect('/support');
+  }
+  const regex = new RegExp(escapeRegExp(search), 'i');
+  const maplist = await Maplist.find({ location: regex });
+  res.render('support/sMap', { maplist });
+};
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
