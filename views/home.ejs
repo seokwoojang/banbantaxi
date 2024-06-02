@@ -11,7 +11,8 @@
         </div>
     </div>
     <div class="icon-container">
-        <img src="/images/website-icon.png" alt="Website Icon" class="img-fluid" style="max-width:400px;">
+        <img src="/images/up.png" alt="Up Icon" class="scroll-image up-icon">
+        <img src="/images/down.png" alt="Down Icon" class="scroll-image down-icon">
     </div>
 </div>
 
@@ -24,3 +25,11 @@
         <img src="/images/website-icon.png" alt="Image 3" class="scroll-image">
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".up-icon").hide().delay(500).animate({ opacity: 'show', left: '-=20', up: '+=100' }, 2000);
+        $(".down-icon").hide().delay(1000).animate({ opacity: 'show', right: '-=20' }, 2000);
+    });
+</script>

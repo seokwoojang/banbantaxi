@@ -1,5 +1,6 @@
 <% layout('layout/boilerplate') %>
-    <h1>계정 생성</h1>
+<div class="register-container">
+    <h1 class="text-center">계정 생성</h1>
     <form action="/register" method="post" class="validated-form" novalidate>
         <div class="mb-3">
             <label for="username" class="form-label">사용자 이름</label>
@@ -22,5 +23,6 @@
                 Looks good!
             </div>
         </div>
-        <button class="btn btn-success">가입하기</button>
+        <button class="btn btn-primary w-100">가입하기</button>
     </form>
+</div>

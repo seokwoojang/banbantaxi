@@ -19,62 +19,81 @@ body {
 .btn-primary {
     font-family: 'Noto Sans', sans-serif; /* Use Google Font */
     font-weight: bold; /* Bold font */
-    border-radius: 20px; /* Rounded corners */
-    padding: 10px 20px; /* Padding */
+    border-radius: 5px; /* Slightly rounded corners */
+    padding: 12px 25px; /* More padding */
     background-color: #ff8c00; /* Button background color */
-    border: none; /* No border */
+    border: 2px solid #ff4c00; /* Button border color */
     color: #ffffff; /* Text color */
-    transition: background-color 0.3s; /* Smooth transition */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.1s; /* Smooth transition */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
 }
 
 .btn:hover,
 .btn-primary:hover {
     background-color: #e67e00; /* Hover background color */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.btn:active,
+.btn-primary:active {
+    background-color: #d66a00; /* Active background color */
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.2); /* Inner shadow for pressed effect */
+    transform: translateY(1px); /* Press down effect */
 }
 
 .btn-primary {
-    border-color: #ff8c00; /* Primary button border color */
+    border-color: #ff4c00; /* Primary button border color */
 }
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(45deg, #ff8c00, #ff4c00); /* Gradient background */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background: linear-gradient(145deg, #ff8c00, #ff4c00); /* Gradient background */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+    padding: 15px 30px; /* More padding for space */
+    border: 2px solid #ff4c00; /* Border for modern look */
+    border-radius: 0; /* Square corners */
 }
 
 .navbar-brand {
-    font-size: 1.5rem;
+    font-size: 2rem; /* Larger font size */
     font-weight: bold;
     color: #ffffff !important; /* White text color */
     cursor: default;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Stronger text shadow for 3D effect */
 }
 
 .nav-link {
     font-weight: bold;
     color: #ffffff !important; /* White text color */
-    margin-right: 15px;
-    transition: color 0.3s ease; /* Smooth color transition */
+    margin-right: 20px; /* More right margin */
+    transition: color 0.3s ease, transform 0.2s ease, text-shadow 0.3s ease; /* Smooth color and transform transition */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4); /* Stronger text shadow for 3D effect */
 }
 
 .nav-link:hover {
     color: #ffdd57 !important; /* Gold text color on hover */
+    transform: translateY(-3px); /* Slight lift on hover */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
 }
 
 .nav-link.active {
     text-decoration: underline;
     color: #ffdd57 !important; /* Gold text color for active link */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5); /* Stronger text shadow for active link */
 }
 
 .navbar-toggler {
     border: none; /* Remove default border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow to toggle button */
 }
 
 .navbar-toggler-icon {
-    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%2880,80,80,0.7%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E'); /* Custom icon color */
+    background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E'); /* Custom icon color */
 }
 
 .navbar-collapse {
-    justify-content: flex-end;
+    justify-content: space-between; /* Spread items to both ends */
 }
 
 @media (max-width: 991.98px) {
@@ -96,9 +115,15 @@ body {
 
 .icon-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+
+.icon-container img {
+    max-width: 400px;
+    margin-bottom: 20px; /* Add some space between images */
 }
 
 /* Usage section */
@@ -133,4 +158,55 @@ body {
 .scroll-image.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Login form styles */
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.login-container h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    text-align: center;
+    color: #333;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: #ff8c00;
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+}
+
+.valid-feedback {
+    font-size: 0.875rem;
+    color: #28a745;
+}
+
+/* Scroll icons positioning */
+.up-icon {
+    position: relative;
+    left: 50px; /* Adjust as needed */
+}
+
+.down-icon {
+    position: relative;
+    right: 50px; /* Adjust as needed */
 }
