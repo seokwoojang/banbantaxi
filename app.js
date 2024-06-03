@@ -77,26 +77,6 @@ app.get("/map", async (req, res) => {
   res.render("support/map");
 });
 
-//---------------------------------------------------
-
-//이동약자 모드
-app.get(
-  "/normal",
-  catchAsync(async (req, res) => {
-    const maplist = await Maplist.find({});
-    res.render("normal/nMap", { maplist });
-  })
-);
-
-//이동약자 모드에서 지도하나 선택시 가는 페이지
-app.get(
-  "/normal/:id",
-  catchAsync(async (req, res) => {
-    const map = await Maplist.findById(req.params.id);
-    res.render("normal/nShow", { map });
-  })
-);
-
 app.all("*", (req, res, next) => {
   next(new ExpressError("page not found", 404));
 });
