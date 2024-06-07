@@ -30,12 +30,13 @@
           </div>
         </div>
         <div class="mb-3">
+          <div><label class="form-label">삭제할 이미지를 선택해주세요</label></div>
           <% map.images.forEach(function(img, i){ %>
             <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
             <div class="form-check-inline">
               <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%= img.filename %>">
             </div>
-            <label for="image-<%=i%>">삭제?</label>
+            <label for="image-<%=i%>"></label>
             <% }) %>
         </div>
         <div class="mb-3">
